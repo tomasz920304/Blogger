@@ -9,7 +9,7 @@ namespace Domain.Entities
 {
     public class Post : AuditableEntity
     {
-            public int Id { get; set; }
+        public int Id { get; set; }
 
         public string Title { get; set; }
 

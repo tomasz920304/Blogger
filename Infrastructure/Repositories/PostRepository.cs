@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
-    internal class PostRepository : IPostRepository
+    public class PostRepository : IPostRepository
     {
         private static readonly ISet<Post> _posts = new HashSet<Post>()
         {

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Domain.Common;
+using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,29 @@ namespace Infrastructure.Data
         }
 
         public DbSet<Post> Posts { get; set; }
+
+        public override int SaveChanges()
+        {
+            var entries = ChangeTracker
+                .Entries()
+                .Where(e => e.Entity is AuditableEntity && (e.State == EntityState.Added || e.State == EntityState.Modified));
+
+            foreach (var entityEntry in entries)
+            {
+                if (entityEntry.State == EntityState.Added)
+                {
+                    ((AuditableEntity)entityEntry.Entity).Created = DateTime.UtcNow;
+                    ((AuditableEntity)entityEntry.Entity).CreatedBy = "Tomasz Grzywacz";
+                }
+
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    ((AuditableEntity)entityEntry.Entity).LastModified = DateTime.UtcNow;
+                    ((AuditableEntity)entityEntry.Entity).LastModifiedBy = "Tomasz Grzywacz";
+                }
+            }
+
+            return base.SaveChanges();
+        }
     }
 }

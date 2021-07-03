@@ -17,7 +17,7 @@ namespace Application
         {
             services.AddScoped<IPostService, PostService>();
 
-            services.AddSingleton(AutoMapperConfig.Initialize());
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             return services;
         }
